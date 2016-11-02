@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head>
+    <title>Home</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" media="all" href="../../css/home.css" th:href="@{/css/home.css}"/>
+  </head>
+
+  <body>
+  	<div th:each="city : ${citys}">
+    	<a href="/city/city.html" th:href="@{/city(cityId=${city.id})}" th:text="${city.name}">beijing</a>
+    </div>
+  </body>
+</html>
