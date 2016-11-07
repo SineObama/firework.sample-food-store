@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xsi:schemaLocation="
           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
@@ -13,21 +14,24 @@
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
+
 	<!-- 开启AOP监听 只对当前配置文件有效 -->
 	<aop:aspectj-autoproxy expose-proxy="true" />
+
+	<!-- 临时用于数据库数据的初始化 -->
+	<bean id="init" class="org.firework.sfs.application.Init"
+		init-method="doInit"></bean>
+
 	<!-- 数据库连接池 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3307/shiro" />
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/test_sfs?createDatabaseIfNotExist=true&amp;useSSL=false" />
 		<property name="username" value="root" />
-		<property name="password" value="xurui" />
-	</bean>
-	<bean id="dataSourceProxy"
-		class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
-		<property name="targetDataSource" ref="dataSource" />
+		<property name="password" value="root" />
 	</bean>
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<constructor-arg ref="dataSourceProxy" />
+		<constructor-arg ref="dataSource" />
 	</bean>
 
 
@@ -40,12 +44,13 @@
 	</bean>
 
 	<!-- Realm实现 -->
-	<!-- <bean id="userRealm" class="org.xurui.shiro.realm.UserRealm"> <property 
-		name="credentialsMatcher" ref="credentialsMatcher" /> </bean> -->
+	<bean id="userRealm" class="org.firework.sfs.realm.UserRealm">
+		<property name="credentialsMatcher" ref="credentialsMatcher" />
+	</bean>
 
 	<!-- 安全管理器 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<!-- <property name="realm" ref="userRealm" /> -->
+		<property name="realm" ref="userRealm" />
 	</bean>
 
 	<!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
@@ -62,16 +67,63 @@
 		<property name="loginUrl" value="/login" />
 		<property name="filterChainDefinitions">
 			<value>
+				/signup = anon
 				/login = anon
-				/logout = logout
-				/role1 = authc,roles[role1]
-				/role2 = authc,roles[role2]
-				/role3=authc,perms[user:delete]
-				/loginSuccess=authc
+				/logout = authc
+				/menu = authc
+				/cuisine_detail/* = authc
+				/order/* = authc
+				/test=authc,roles[role1],perms[user:delete]
 			</value>
 		</property>
 	</bean>
 
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+
+	<!-- 以下参考http://www.cnblogs.com/share2015/p/5382759.html -->
+
+	<!--jpa管理工厂 -->
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+
+		<!--数据源 -->
+		<property name="dataSource" ref="dataSource" />
+		<!--适配器 -->
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<!--扫描包 -->
+		<property name="packagesToScan" value="org.firework.sfs.business" />
+
+		<!--基本配置 -->
+		<property name="jpaProperties">
+			<props>
+				<!--命名策略 -->
+				<!--<prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop> -->
+				<!--基本配置 -->
+				<!--<prop key="hibernate.format_sql">true</prop> -->
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<!--二级缓存 -->
+				<!--<prop key="hibernate.cache.use_query_cache">true</prop> <prop key="hibernate.cache.use_second_level_cache">true</prop> 
+					<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory 
+					</prop> -->
+			</props>
+		</property>
+		<property name="sharedCacheMode" value="ENABLE_SELECTIVE" />
+	</bean>
+
+	<!--配置事务 -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<!--配置基于注解的事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!--配置spring data -->
+	<!--<jpa:repositories base-package="org.firework.sfs.business.entity" entity-manager-factory-ref="entityManagerFactory"></jpa:repositories> -->
 
 </beans>

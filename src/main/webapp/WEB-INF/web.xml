@@ -8,9 +8,6 @@
 
 	<display-name>firework Sample Food Store</display-name>
 
-
-	<!-- 以下来自博客：SpringMVC整合Shiro。http://blog.csdn.net/jadyer/article/details/12208847 -->
-
 	<!-- 防止发生java.beans.Introspector内存泄露,应将它配置在ContextLoaderListener的前面 -->
 	<!-- 详细描述见http://blog.csdn.net/jadyer/article/details/11991457 -->
 	<listener>
@@ -26,6 +23,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+	<!-- 似乎无法解决 -->
 	<!-- 解决乱码问题 -->
 	<!-- forceEncoding默认为false,此时效果可大致理解为request.setCharacterEncoding("UTF-8") -->
 	<!-- forceEncoding=true后,可大致理解为request.setCharacterEncoding("UTF-8")和response.setCharacterEncoding("UTF-8") -->
@@ -65,7 +63,6 @@
 	</filter-mapping>
 
 	<!-- spring MVC -->
-
 	<servlet>
 		<servlet-name>spring</servlet-name>
 		<servlet-class>
