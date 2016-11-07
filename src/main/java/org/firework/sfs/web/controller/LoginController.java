@@ -30,11 +30,12 @@ public class LoginController {
 			throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		
+		String rememberMe = request.getParameter("rememberMe");
+
 		Subject subject = SecurityUtils.getSubject();
-		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+		UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe != null);
 		String msg = null;
-		
+
 		try {
 			subject.login(token);
 		} catch (UnknownAccountException e) {
@@ -47,7 +48,8 @@ public class LoginController {
 
 		if (msg != null) {
 			model.addAttribute("msg", msg);
-			model.addAttribute("cached_username", username);  // TODO 保存用户名。在别处实现？
+			model.addAttribute("cached_username", username); // TODO
+																// 保存用户名。在别处实现？
 			return "login";
 		} else {
 			return "redirect:/menu";

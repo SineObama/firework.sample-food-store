@@ -13,14 +13,7 @@
 
 	<context:annotation-config />
 	
-	<!-- 无法解决中文编码问题 -->
-	<mvc:annotation-driven>
-		<!-- <mvc:message-converters register-defaults="true">
-			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
-				<property name="supportedMediaTypes" value="text/html;charset=UTF-8" />
-			</bean>
-		</mvc:message-converters> -->
-	</mvc:annotation-driven>
+	<mvc:annotation-driven />
 	
 	<context:component-scan base-package="org.firework.sfs.web.controller" />
 
@@ -46,6 +39,8 @@
 		<!-- Template cache is true by default. Set to false if you want -->
 		<!-- templates to be automatically updated when modified. -->
 		<property name="cacheable" value="true" />
+		<!-- added by Sine 解决中文变成问号 -->
+		<property name="characterEncoding" value="UTF-8"/>
 	</bean>
 
 	<!-- SpringTemplateEngine automatically applies SpringStandardDialect and -->
@@ -64,6 +59,8 @@
 
 	<bean id="viewResolver" class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
 		<property name="templateEngine" ref="templateEngine" />
+		<!-- added by Sine 解决中文变成问号 -->
+		<property name="characterEncoding" value="UTF-8"/>
 	</bean>
 
 	<!--bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver"> 

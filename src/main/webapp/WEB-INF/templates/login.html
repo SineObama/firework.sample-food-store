@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
   <head>
-    <title>login</title>
+    <title>登录</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" media="all" href="../../css/home.css" th:href="@{/css/home.css}"/>
   </head>
@@ -13,8 +13,9 @@
 	<form method="post">
 	username:<input type="text" name="username" th:value="${cached_username}"/><br />
 	password:<input type="password" name="password"><br/>
+	<input type="checkbox" name="rememberMe" value="rememberMe" />remember me<br/>
 	<input type="submit"/>
 	</form>
-	<a href="/signup">signup</a>
+	<a href="/signup">注册</a>
   </body>
 </html>

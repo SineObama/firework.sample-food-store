@@ -16,7 +16,7 @@ public class Init {
 	public void doInit() {
 		Role role = new Role();
 		role.setRole("vip");
-		role.setDescription("ÏíÊÜ95ÕÛÓÅ»İ");
+		role.setDescription("é¢å¤–äº«å—95æŠ˜");
 
 		User user = createUser("a", "a");
 		userService.create(user);
@@ -25,8 +25,8 @@ public class Init {
 	}
 
 	private User createUser(String username, String password) {
-		String salt = username; // TODO ÉèÖÃsaltÎªÊ²Ã´±È½ÏºÃ
-		Md5Hash hash = new Md5Hash(password, salt); // MD5¼ÓÑÎ¼ÓÃÜ
+		String salt = username;
+		Md5Hash hash = new Md5Hash(password, salt);
 		password = hash.toString();
 
 		User user = new User();
