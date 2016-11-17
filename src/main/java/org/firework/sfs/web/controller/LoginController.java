@@ -43,13 +43,13 @@ public class LoginController {
 		} catch (IncorrectCredentialsException e) {
 			msg = "wrong password";
 		} catch (AuthenticationException e) {
-			msg = "wrong: " + e.getMessage();
+			msg = "server error";
 		}
 
 		if (msg != null) {
 			model.addAttribute("msg", msg);
-			model.addAttribute("cached_username", username); // TODO
-																// 保存用户名。在别处实现？
+			// TODO 保存用户名。在别处实现？
+			model.addAttribute("cached_username", username);
 			return "login";
 		} else {
 			return "redirect:/menu";

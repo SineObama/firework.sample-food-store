@@ -7,14 +7,20 @@ import java.util.Set;
 
 public interface IUserService {
 
-	 void create(User user);
+	boolean exist(String username);
 
-	 void correlationRoles(User user, Role role);
+	void create(User user);
 
-	 void uncorrelationRoles(User user, Role role);
+	void correlationRoles(User user, Role role);
 
-	 User findByUsername(String username);
+	void uncorrelationRoles(User user, Role role);
 
-	 Set<String> findRoles(String username);
+	User findByUsername(String username);
+
+	boolean hasRole(User user, Role role);
+
+	Set<String> findRoles(String username);
+
+	boolean isVip(String username);
 
 }

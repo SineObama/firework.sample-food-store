@@ -19,6 +19,10 @@ public class UserService implements IUserService {
 	@Autowired
 	private IUserRoleDao userRoleDao;
 
+	public boolean exist(String username) {
+		return userDao.findByUsername(username) != null;
+	}
+
 	public void create(User user) {
 		userDao.create(user);
 	}
@@ -41,8 +45,16 @@ public class UserService implements IUserService {
 		return userDao.findByUsername(username);
 	}
 
+	public boolean hasRole(User user, Role role) {
+		return userRoleDao.exists(user, role);
+	}
+
 	public Set<String> findRoles(String username) {
 		return userRoleDao.findRoles(username);
+	}
+
+	public boolean isVip(String username) {
+		return findRoles(username).contains("vip");
 	}
 
 }

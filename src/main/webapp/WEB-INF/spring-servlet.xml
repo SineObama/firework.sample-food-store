@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 改编自stsm-xml的stsm-servlet.xml -->
+<!-- 改编自gtvg的gtvg-servlet.xml -->
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -12,26 +12,21 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<context:annotation-config />
-	
+
 	<mvc:annotation-driven />
-	
+
 	<context:component-scan base-package="org.firework.sfs.web.controller" />
 
 	<mvc:resources mapping="/images/**" location="/images/" />
 	<mvc:resources mapping="/css/**" location="/css/" />
 	<mvc:resources mapping="/js/**" location="/js/" />
 
-	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename" value="Messages" />
-	</bean>
-
 
 	<!-- SpringResourceTemplateResolver automatically integrates with Spring's 
 		own -->
 	<!-- resource resolution infrastructure, which is highly recommended. -->
 	<bean id="templateResolver"
-		class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
+		class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
 		<property name="prefix" value="/WEB-INF/templates/" />
 		<property name="suffix" value=".html" />
 		<!-- HTML is the default value, added here for the sake of clarity. -->
@@ -39,14 +34,20 @@
 		<!-- Template cache is true by default. Set to false if you want -->
 		<!-- templates to be automatically updated when modified. -->
 		<property name="cacheable" value="true" />
-		<!-- added by Sine 解决中文变成问号 -->
-		<property name="characterEncoding" value="UTF-8"/>
+		<!-- added by Sine 解决中文问题 -->
+		<property name="characterEncoding" value="UTF-8" />
 	</bean>
 
 	<!-- SpringTemplateEngine automatically applies SpringStandardDialect and -->
 	<!-- enables Spring's own MessageSource message resolution mechanisms. -->
-	<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+	<bean id="templateEngine" class="org.thymeleaf.TemplateEngine">
 		<property name="templateResolver" ref="templateResolver" />
+		<!-- 用于thymleaf使用shiro标签 -->
+		<property name="additionalDialects">
+			<set>
+				<bean class="at.pollux.thymeleaf.shiro.dialect.ShiroDialect" />
+			</set>
+		</property>
 		<!-- Enabling the SpringEL compiler with Spring 4.2.4 or newer can speed 
 			up -->
 		<!-- execution in most scenarios, but might be incompatible with specific -->
@@ -54,13 +55,12 @@
 			data -->
 		<!-- ypes, so this flag is "false" by default for safer backwards -->
 		<!-- compatibility. -->
-		<property name="enableSpringELCompiler" value="true" />
 	</bean>
 
 	<bean id="viewResolver" class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
 		<property name="templateEngine" ref="templateEngine" />
-		<!-- added by Sine 解决中文变成问号 -->
-		<property name="characterEncoding" value="UTF-8"/>
+		<!-- added by Sine 解决中文问题 -->
+		<property name="characterEncoding" value="UTF-8" />
 	</bean>
 
 	<!--bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver"> 

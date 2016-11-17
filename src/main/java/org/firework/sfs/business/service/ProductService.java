@@ -17,31 +17,37 @@
  * 
  * =============================================================================
  */
-package org.firework.sfs.web.controller;
+package org.firework.sfs.business.service;
 
 import java.util.List;
 
+import org.firework.sfs.business.dao.IProductDao;
 import org.firework.sfs.business.entity.Product;
-import org.firework.sfs.business.service.IProductService;
-import org.firework.sfs.business.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Controller
-public class MenuController {
+@Service
+@Transactional
+public class ProductService implements IProductService {
 
 	@Autowired
-	IProductService productService;
-	@Autowired
-	IUserService userService;
+	IProductDao productDao;
 
-	@RequestMapping("/menu")
-	public String home(Model model) {
-		final List<Product> allProducts = productService.findAll();
-		model.addAttribute("prods", allProducts);
-		return "menu";
+	public void create(Product product) {
+		productDao.create(product);
+	}
+	
+	public List<Product> findAll() {
+		return productDao.findAll();
+	}
+
+	public Product findById(final Integer id) {
+		return productDao.findOne(id);
+	}
+	
+	public Product findByName(String productName) {
+		return productDao.findByName(productName);
 	}
 
 }

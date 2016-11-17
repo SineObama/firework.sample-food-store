@@ -51,7 +51,7 @@
 	<!-- 安全管理器 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="userRealm" />
-		<property name="rememberMeManager" ref="rememberMeManager"/>
+		<property name="rememberMeManager" ref="rememberMeManager" />
 	</bean>
 
 	<!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
@@ -74,13 +74,27 @@
 				/menu = user
 				/cuisine_detail/* = user
 				/order/* = authc
-				/test=authc,roles[role1],perms[user:delete]
+				/buy = authc
+				/test=authc,roles[vip],perms[user:delete]
 			</value>
 		</property>
 	</bean>
 
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 
+
+	<!-- <bean id="ehCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+	</bean>
+	<bean id="defaultAdvisorAutoProxyCreator"
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	<bean id="authorizationAttributeSourceAdvisor"
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean> -->
+	<!-- 以下用于thymleaf使用shiro标签 -->
+	<!-- <bean id="shiroDialect" class="at.pollux.thymeleaf.shiro.dialect.ShiroDialect" /> -->
 
 	<!-- 以下参考http://www.cnblogs.com/share2015/p/5382759.html -->
 
