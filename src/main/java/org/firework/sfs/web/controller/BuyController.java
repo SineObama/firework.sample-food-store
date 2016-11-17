@@ -45,7 +45,7 @@ public class BuyController {
 	}
 
 	@RequestMapping(value = "/buy", method = RequestMethod.POST)
-	public String buy(Model model) {
+	public String buy() {
 		Subject subject = SecurityUtils.getSubject();
 		if (userService.isVip(subject.getPrincipal().toString())) {
 			return "buy";
@@ -53,6 +53,6 @@ public class BuyController {
 		User user = userService.findByUsername((String) subject.getPrincipal());
 		Role vip = roleService.findByRole("vip");
 		userService.correlationRoles(user, vip);
-		return "redirect:/menu";
+		return "redirect:/";
 	}
 }

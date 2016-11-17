@@ -71,7 +71,7 @@
 				/signup = anon
 				/login = anon
 				/logout = user
-				/menu = user
+				/menu = anon
 				/cuisine_detail/* = user
 				/order/* = authc
 				/buy = authc
@@ -82,19 +82,6 @@
 
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 
-
-	<!-- <bean id="ehCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-	</bean>
-	<bean id="defaultAdvisorAutoProxyCreator"
-		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
-		<property name="proxyTargetClass" value="true" />
-	</bean>
-	<bean id="authorizationAttributeSourceAdvisor"
-		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-		<property name="securityManager" ref="securityManager" />
-	</bean> -->
-	<!-- 以下用于thymleaf使用shiro标签 -->
-	<!-- <bean id="shiroDialect" class="at.pollux.thymeleaf.shiro.dialect.ShiroDialect" /> -->
 
 	<!-- 以下参考http://www.cnblogs.com/share2015/p/5382759.html -->
 
