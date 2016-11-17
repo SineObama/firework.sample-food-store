@@ -22,7 +22,6 @@ package org.firework.sfs.business.dao;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import javax.persistence.Query;
 
 import org.firework.sfs.business.entity.Product;
@@ -37,18 +36,18 @@ public class ProductDao extends AbstractJpaDAO<Product> implements IProductDao {
 	}
 
 	public Product findByName(String productName) {
-		String sql = "select id, name, price, inStock from products p where name = :name";
+		String sql = "select id, name, price, inStock, vipDiscount from products p where name = :name";
 		Query query = entityManager.createNativeQuery(sql, Product.class);
 		query.setParameter("name", productName);
 		return (Product) query.getSingleResult();
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Product> findAll() {
-		String sql = "select * from products";
-		Query query = entityManager.createNativeQuery(sql, Product.class);
-		return new SlowList<Product>(query.getResultList());
-	}
+//	@SuppressWarnings("unchecked")
+//	public List<Product> findAll() {
+//		String sql = "select * from products";
+//		Query query = entityManager.createNativeQuery(sql, Product.class);
+//		return new SlowList<Product>(query.getResultList());
+//	}
 
 	static final class SlowList<T> extends ArrayList<T> {
 

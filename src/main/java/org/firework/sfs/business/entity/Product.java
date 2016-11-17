@@ -33,24 +33,26 @@ import javax.persistence.Table;
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id = null;
 	private String name = null;
 	private BigDecimal price = null;
 	private boolean inStock = false;
+	private boolean vipDiscount = true;
 	// private List<Comment> comments = new ArrayList<Comment>();
 
 	public Product() {
 		super();
 	}
 
-	public Product(final String name, final boolean inStock, final BigDecimal price) {
+	public Product(final String name, final boolean inStock, final BigDecimal price, final boolean vipDiscount) {
 		super();
 		this.name = name;
 		this.price = price;
 		this.inStock = inStock;
+		this.vipDiscount = vipDiscount;
 	}
 
 	public Long getId() {
@@ -77,12 +79,20 @@ public class Product implements Serializable {
 		this.price = price;
 	}
 
-	public boolean isInStock() {
+	public boolean getInStock() {
 		return this.inStock;
 	}
 
 	public void setInStock(final boolean inStock) {
 		this.inStock = inStock;
+	}
+
+	public boolean getVipDiscount() {
+		return this.vipDiscount;
+	}
+
+	public void setVipDiscount(final boolean vipDiscount) {
+		this.vipDiscount = vipDiscount;
 	}
 
 	// public List<Comment> getComments() {

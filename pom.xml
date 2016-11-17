@@ -4,7 +4,7 @@
 	<groupId>org.firework</groupId>
 	<artifactId>sample-food-store</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<name>sample-food-store Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
